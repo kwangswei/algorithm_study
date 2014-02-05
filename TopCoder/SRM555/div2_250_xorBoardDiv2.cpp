@@ -5,17 +5,19 @@
 
 using namespace std;
 
-class XorBoardDivTwo2Optimized {
+class XorBoardDivTwoOptimized {
     public:
         int theMax(vector<string> board);
     private:
 };
 
-int XorBoardDivTwo2Optimized::theMax(vector<string> board) {
+int XorBoardDivTwoOptimized::theMax(vector<string> board) {
     vector<int> countOfRows = vector<int>(board.size(), 0);
     vector<int> countOfCols = vector<int>(board[0].size(), 0);
 
     int totalOnes = 0;
+    int crossCount = board[0].size() + board.size() - 1;
+
     for (int i = 0; i < board.size(); ++i) {
         for (int j = 0; j < board[i].size(); ++j) {
             countOfRows[i] += board[i][j] == '0';
@@ -27,15 +29,13 @@ int XorBoardDivTwo2Optimized::theMax(vector<string> board) {
     int maxChange = -100;
     for (int i = 0; i < board.size(); ++i) {
         for (int j = 0; j < board[i].size(); ++j) {
-            int change = countOfRows[i] + countOfCols[j] - 2 * (board[i][j] == '0');
-            maxChange = max(maxChange, change);
+            int countOfZeros = countOfRows[i] + countOfCols[j] - (board[i][j] == '0');
+            int countOfOnes = crossCount - countOfZeros;
+            maxChange = max(maxChange , countOfZeros - countOfOnes + (board[i][j] == '1' ? 1 : -1));
         }
     }
-
     return totalOnes + maxChange;
 }
-
-
 
 class XorBoardDivTwo {
     public:
@@ -82,34 +82,34 @@ int XorBoardDivTwo::getCountOfOnes(vector<string>& board) {
 
 int main() {
     XorBoardDivTwo test;
-    XorBoardDivTwo2Optimized test2;
+    XorBoardDivTwoOptimized test2;
 
     cout << test.theMax({"101", "010", "101"}) << endl;
     cout << test.theMax({"000000000000000000000000",
-             "011111100111111001111110",
-              "010000000100000001000000",
-               "010000000100000001000000",
-                "010000000100000001000000",
-                 "011111100111111001111110",
-                  "000000100000001000000010",
-                   "000000100000001000000010",
-                    "000000100000001000000010",
-                     "011111100111111001111110",
-                      "000000000000000000000000"}) << endl;
+            "011111100111111001111110",
+            "010000000100000001000000",
+            "010000000100000001000000",
+            "010000000100000001000000",
+            "011111100111111001111110",
+            "000000100000001000000010",
+            "000000100000001000000010",
+            "000000100000001000000010",
+            "011111100111111001111110",
+            "000000000000000000000000"}) << endl;
+
 
     cout << test2.theMax({"101", "010", "101"}) << endl;
     cout << test2.theMax({"000000000000000000000000",
-             "011111100111111001111110",
-              "010000000100000001000000",
-               "010000000100000001000000",
-                "010000000100000001000000",
-                 "011111100111111001111110",
-                  "000000100000001000000010",
-                   "000000100000001000000010",
-                    "000000100000001000000010",
-                     "011111100111111001111110",
-                      "000000000000000000000000"}) << endl;
-
+            "011111100111111001111110",
+            "010000000100000001000000",
+            "010000000100000001000000",
+            "010000000100000001000000",
+            "011111100111111001111110",
+            "000000100000001000000010",
+            "000000100000001000000010",
+            "000000100000001000000010",
+            "011111100111111001111110",
+            "000000000000000000000000"}) << endl;
 
     return 0;
 }
